@@ -1,61 +1,45 @@
 from fastapi import FastAPI
-app = FastAPI()
-@app.get("/")
-def root():
- return "Player Preduction"
-@app.get("/items/{item_id}")
-async def read_item(item_id):
- return {"item_id": item_id}
-
-
+from pydantic import BaseModel
 import joblib
+
+app = FastAPI()
+
+# Load the model and scaler
 model_kmeans = joblib.load('kmens_model.joblib')
 scaler_kmeans = joblib.load('kmens_scaler.joblib')
 
-
-from pydantic import BaseModel
+# Define the data model for the input
 class InputFeatures(BaseModel):
     Provider: str
     Level: str
     Type: str
     Duration_Weeks: str
 
-def preprocessing(input_features: InputFeatures):
+# Function to preprocess the input data
+def preprocess_features(input_features: InputFeatures):
     dict_f = {
-            'Provider': input_features.Provider ,
-            'Level': input_features.Level, 
-            'Type': input_features.Type, 
-            'Duration / Weeks': input_features.Duration_Weeks ,
-            
-        }
-    return dict_f
-
-
-@app.get("/predict")
-def predict(input_features: InputFeatures):
-    return preprocessing(input_features)
-
-def preprocessing(input_features: InputFeatures):
-    dict_f = {
-            'Provider': input_features.Provider ,
-            'Level': input_features.Level, 
-            'Type': input_features.Type, 
-            'Duration / Weeks': input_features.Duration_Weeks ,
-            
-        }
+        'Provider': input_features.Provider,
+        'Level': input_features.Level,
+        'Type': input_features.Type,
+        'Duration_Weeks': input_features.Duration_Weeks
+    }
     # Convert dictionary values to a list in the correct order
     features_list = [dict_f[key] for key in sorted(dict_f)]
-    
     # Scale the input features
-    scaled_features = scaler_kmeans.transform([list(dict_f.values
- ())])
+    scaled_features = scaler_kmeans.transform([features_list])
     return scaled_features
 
+# Prediction endpoint
 @app.post("/predict")
 async def predict(input_features: InputFeatures):
-    data = preprocessing(input_features)
+    data = preprocess_features(input_features)
     y_pred = model_kmeans.predict(data)
-    return {"pred": y_pred.tolist()[0]}
+    return {"prediction": y_pred.tolist()[0]}
 
+@app.get("/")
+def root():
+    return "Player Prediction"
 
-
+@app.get("/items/{item_id}")
+async def read_item(item_id: int):
+    return {"item_id": item_id}
