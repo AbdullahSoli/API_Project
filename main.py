@@ -38,7 +38,7 @@ async def predict(input_features: InputFeatures):
 
 @app.get("/")
 def root():
-    return "Player Prediction"
+    return " Prediction"
 
 @app.get("/items/{item_id}")
 async def read_item(item_id: int):
