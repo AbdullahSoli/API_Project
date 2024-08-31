@@ -30,9 +30,6 @@ def preprocess_features(input_features: InputFeatures):
     return scaled_features
 
 # Prediction endpoint
-@app.get("/predict")
-def predict(input_features: InputFeatures):
-    return preprocessing(input_features)
 @app.post("/predict")
 async def predict(input_features: InputFeatures):
     data = preprocess_features(input_features)
@@ -41,7 +38,7 @@ async def predict(input_features: InputFeatures):
 
 @app.get("/")
 def root():
-    return " Prediction"
+    return "Prediction API is working."
 
 @app.get("/items/{item_id}")
 async def read_item(item_id: int):
