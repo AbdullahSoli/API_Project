@@ -10,10 +10,10 @@ scaler_kmeans = joblib.load('kmens_scaler.joblib')
 
 # Define the data model for the input
 class InputFeatures(BaseModel):
-    provider: str
-    level: str
-    type_: str
-    duration_Weeks: str
+    provider: int
+    level: int
+    type_: int
+    duration_Weeks: int
 
 # Function to preprocess the input data
 def preprocess_features(input_features: InputFeatures):
