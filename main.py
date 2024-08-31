@@ -11,7 +11,7 @@ scaler_kmeans = joblib.load('kmens_scaler.joblib')
 # Define the data model for the input
 class InputFeatures(BaseModel):
     provider: str
-    pevel: str
+    level: str
     type_: str
     duration_Weeks: str
 
