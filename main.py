@@ -40,6 +40,6 @@ async def predict(input_features: InputFeatures):
 def root():
     return " Prediction"
 
-@app.get("/items/{item_id}")
-async def read_item(item_id: int):
-    return {"item_id": item_id}
+#@app.get("/items/{item_id}")
+#async def read_item(item_id: int):
+    #return {"item_id": item_id}
