@@ -1,8 +1,8 @@
-streamlit
-requests
-joblib
-pydantic
-fastapi
-uvicorn
-sklearn
-scikit-learn
+streamlit[all]
+requests[all]
+joblib[all]
+pydantic[all]
+fastapi[all]
+uvicorn[all]
+sklearn[all]
+scikit-learn[all]
